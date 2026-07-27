@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Saldrías conmigo? 💗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f3ff;
+    --card: #ffffff;
+    --primary: #7c3aed;
+    --primary-light: #ede9fe;
+    --primary-dark: #5b21b6;
+    --accent: #ec4899;
+    --accent-light: #fce7f3;
+    --green: #10b981;
+    --green-light: #d1fae5;
+    --text: #1e1b4b;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 4px 24px rgba(124,58,237,0.12);
+    --shadow-lg: 0 8px 40px rgba(124,58,237,0.18);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(236,72,153,0.06) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    animation: fadeDown 0.6s ease;
+  }
+
+  .header-cat {
+    font-size: 64px;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(124,58,237,0.3));
+    margin-bottom: 8px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+
+  .header p {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    background: var(--border);
+    border-radius: 100px;
+    height: 6px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 100px;
+    transition: width 0.5s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  .progress-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* ── STEP ── */
+  .step { display: none; }
+  .step.active {
+    display: block;
+    animation: slideUp 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  /* ── PLEA CARD ── */
+  .plea-card {
+    background: var(--primary-light);
+    border: 2px solid rgba(124,58,237,0.2);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .plea-emoji { font-size: 40px; flex-shrink: 0; }
+
+  .plea-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    line-height: 1.4;
+  }
+
+  .plea-text small {
+    display: block;
+    font-size: 12px;
+    font-family: 'Fira Code', monospace;
+    color: var(--primary);
+    opacity: 0.8;
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .q-tag {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .q-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* ── OPTIONS ── */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .opt {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+    line-height: 1.4;
+  }
+
+  .opt:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    transform: translateX(4px);
+  }
+
+  .opt.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  }
+
+  .opt-key {
+    width: 28px;
+    height: 28px;
+    background: var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .opt:hover .opt-key,
+  .opt.selected .opt-key {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-next {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(124,58,237,0.3);
+  }
+
+  .btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(124,58,237,0.4);
+  }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, var(--accent), #db2777);
+    box-shadow: 0 4px 12px rgba(236,72,153,0.3);
+  }
+
+  .btn-confirm:hover {
+    box-shadow: 0 8px 20px rgba(236,72,153,0.4);
+  }
+
+  /* ── ERROR ── */
+  .err-msg {
+    display: none;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 8px;
+  }
+
+  /* ── SUMMARY ── */
+  .summary-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .summary-header .big-cat {
+    font-size: 72px;
+    display: block;
+    animation: pulse 2s ease-in-out infinite;
+    margin-bottom: 12px;
+  }
+
+  .summary-header h2 {
+    font-size: 26px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .summary-header p {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .summary-table {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .summary-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .summary-row:nth-child(even) { background: var(--bg); }
+
+  .s-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 36px;
+    text-align: center;
+  }
+
+  .s-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    min-width: 100px;
+  }
+
+  .s-value {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  /* ── FINALE ── */
+  .finale {
+    display: none;
+    text-align: center;
+    padding: 24px;
+    background: var(--green-light);
+    border: 2px solid rgba(16,185,129,0.3);
+    border-radius: var(--radius);
+    animation: pop 0.5s cubic-bezier(.34,1.56,.64,1);
+    margin-top: 16px;
+  }
+
+  .finale .big-emoji { font-size: 56px; display: block; margin-bottom: 12px; }
+
+  .finale h3 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  .finale p {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #065f46;
+    line-height: 1.6;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── FLOATING CATS ── */
+  .float-cat {
+    position: fixed;
+    height: 100px;
+    width: auto;
+    pointer-events: none;
+    animation: rain linear forwards;
+    z-index: 9999;
+    top: -120px;
+  }
+
+  @keyframes rain {
+    from { top: -50px; opacity: 1; }
+    to { top: 110vh; opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-cat"><img src="memes/gatito1.png" style="height:260px;width:auto;vertical-align:middle;object-fit:contain;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 18px rgba(124,58,237,0.4));" /></span>
+    <img src="memes/gatito1.png" alt="gatito1" style="width:150px;height:auto;border-radius:16px;display:block;margin:0 auto 16px;">
+    <h1>¿Saldrías conmigo?</h1>
+    <img src="memes/gatito2.png" alt="gatito2" style="width:150px;height:auto;border-radius:16px;display:block;margin:16px auto 0;">
+    <p>// ejecutando: AppCita</p>
+  </div>
+
+  <!-- STEP 0: Intro -->
+  <div class="step active" id="s0">
+    <div class="plea-card">
+      <span class="plea-emoji"><img src="memes/gatito2.png" style="height:110px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+      <div class="plea-text">
+        Antes de responder... ¡responde esto primero! 🥺
+        <small>/* se requiere una respuesta para continuar */</small>
+      </div>
+    </div>
+    <button class="btn-next" onclick="go(0,1)">[ INICIAR PROTOCOLO → ]</button>
+  </div>
+
+  <!-- STEP 1: ¿Quieres una cita? (Sí/No imposible) -->
+  <div class="step" id="s1">
+    <div class="q-card" style="text-align:center;">
+      <img src="memes/gatito1.png" alt="gatito1" style="width:150px;height:auto;border-radius:16px;display:block;margin:0 auto 16px;">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+        <img src="memes/1.png" alt="Chihuahua" style="width:120px;height:auto;border-radius:16px;animation:float 3s ease-in-out infinite;">
+        <img src="memes/2.png" alt="Perrito con rosa" style="width:120px;height:auto;border-radius:16px;animation:float 3s ease-in-out infinite;animation-delay:0.5s;">
+        <img src="memes/5.png" alt="Gatito con rosa" style="width:120px;height:auto;border-radius:16px;animation:float 3s ease-in-out infinite;animation-delay:1s;">
+      </div>
+      <div class="q-text" style="font-size:22px;margin-bottom:20px;">¿Quieres tener una cita conmigo? 🥺💕</div>
+      <div style="display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;min-height:80px;position:relative;">
+        <button id="btn-si" class="btn-next" style="font-size:18px;padding:16px 40px;transition:all 0.3s;" onclick="ans[1]='¡Sí! 💜';go(1,2)">Sí 💜</button>
+        <button id="btn-no" class="btn-next" style="font-size:14px;padding:12px 24px;background:linear-gradient(135deg,#6b7280,#4b5563);box-shadow:0 4px 12px rgba(107,114,128,0.3);position:relative;transition:all 0.2s;" onmouseover="escapeNo()" ontouchstart="escapeNo()">No</button>
+      </div>
+      <p id="no-msg" style="display:none;margin-top:12px;font-family:'Fira Code',monospace;font-size:12px;color:var(--accent);">// error: opción no válida</p>
+    </div>
+  </div>
+
+  <!-- STEP 2: ¿Cuándo estás disponible? -->
+  <div class="step" id="s2">
+    <div class="q-card" style="text-align:center;">
+      <img src="memes/gatito1.png" alt="gatito1" style="width:150px;height:auto;border-radius:16px;display:block;margin:0 auto 16px;">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+        <img src="memes/3.png" alt="Corgi" style="margin-top:50px;height:140px;width:auto;border-radius:16px;animation:pulse 2s ease-in-out infinite;">
+        <img src="memes/4.png" alt="Gatito emocionado" style="margin-top:50px;height:140px;width:auto;border-radius:16px;animation:pulse 2s ease-in-out infinite;animation-delay:0.5s;">
+      </div>
+      <span class="q-tag">// módulo: agenda.sync</span>
+      <div class="q-text" style="margin-top:12px;margin-bottom:20px;">¿Cuándo estás disponible? 📅</div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+        <label style="font-family:'Fira Code',monospace;font-size:12px;color:var(--text-muted);width:100%;text-align:left;">Fecha:</label>
+        <input type="date" id="cita-fecha" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--text);background:var(--bg);outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+        <label style="font-family:'Fira Code',monospace;font-size:12px;color:var(--text-muted);width:100%;text-align:left;margin-top:8px;">Hora:</label>
+        <input type="time" id="cita-hora" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--text);background:var(--bg);outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div class="err-msg" id="e2">// error: selecciona fecha y hora para continuar 🗓️</div>
+      <button class="btn-next" style="margin-top:20px;" onclick="pickDate()">[ CONFIRMAR FECHA → ]</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Que lugar te Gustaria ir 🚕 -->
+  <div class="step" id="s3">
+    <span class="progress-label" id="prog-label">pregunta 1 / 4</span>
+    <div class="progress-wrap"><div class="progress-fill" id="pbar" style="width:25%"></div></div>
+
+    <div style="text-align:center;margin:12px 0;"><img src="memes/gatito3.png" style="height:120px;width:auto;vertical-align:middle;object-fit:contain;animation:float 2.5s ease-in-out infinite;" /></div>
+    <div class="q-card">
+      <span class="q-tag">// módulo: Lugar.exe</span>
+      <div class="q-text">🚕 Lugares — ¿Que lugar te Gustaria ir?</div>
+    </div>
+
+    <div class="options">
+      <button class="opt" onclick="pick(3,0,'🚀 Jampy 🌭')">
+        <span class="opt-key">A</span>Jampy 🌭
+      </button>
+      <button class="opt" onclick="pick(3,1,'Budapest 🍩')">
+        <span class="opt-key">B</span>Budapest 🍩
+      </button>
+      <button class="opt" onclick="pick(3,2,'Geralds 🍗')">
+        <span class="opt-key">C</span>Gerald's 🍗
+      </button>
+      <button class="opt" onclick="pick(3,3,'🎭 Pollos Robby')">
+        <span class="opt-key">D</span>Pollos Robby 🍕
+      </button>
+    </div>
+    <p class="err-msg" id="e3">⚠ ¡Elige algo porfa! el algoritmo espera 🙏</p>
+    <br>
+    <button class="btn-next" onclick="go(3,4)">[ SIGUIENTE PARÁMETRO → ]</button>
+  </div>
+
+  <!-- STEP 4: Planes -->
+  <div class="step" id="s4">
+    <span class="progress-label" id="prog-label2">pregunta 2 / 4</span>
+    <div class="progress-wrap"><div class="progress-fill" id="pbar2" style="width:50%"></div></div>
+
+    <div style="text-align:center;margin:12px 0;"><img src="memes/gatito4.png" style="height:120px;width:auto;vertical-align:middle;object-fit:contain;animation:float 3.2s ease-in-out infinite;" /></div>
+    <div class="q-card">
+      <span class="q-tag">// módulo: actividades_sociales.config</span>
+      <div class="q-text">📍 Primera cita — ¿Que te gustaria hacer?</div>
+    </div>
+
+    <div class="options">
+      <button class="opt" onclick="pick(4,0,'☕ Conocernos y Charlar')">
+        <span class="opt-key">A</span>Conocernos y Charlar ☕
+      </button>
+      <button class="opt" onclick="pick(4,1,'🎥 Pelis, Serie y Anime')">
+        <span class="opt-key">B</span>Pelis, Serie y Anime 🎥
+      </button>
+      <button class="opt" onclick="pick(4,2,'💓 Gustos y Anhelos')">
+        <span class="opt-key">C</span>Gustos y Anhelos 💓
+      </button>
+      <button class="opt" onclick="pick(4,3,'🎮 Games')">
+        <span class="opt-key">D</span>Games 🎮
+      </button>
+    </div>
+    <p class="err-msg" id="e4">⚠ ¡Selecciona una opción! 🙏</p>
+    <br>
+    <button class="btn-next" onclick="go(4,5)">[ CONTINUAR → ]</button>
+  </div>
+
+  <!-- STEP 5: Comida -->
+  <div class="step" id="s5">
+    <span class="progress-label" id="prog-label3">pregunta 3 / 4</span>
+    <div class="progress-wrap"><div class="progress-fill" id="pbar3" style="width:75%"></div></div>
+
+    <div class="plea-card">
+      <span class="plea-emoji"><img src="memes/gatito5.png" style="height:110px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+      <div class="plea-text">
+        ¿Qué comemos? yo invito (o sea... compartimos, ¿no? 🥺)
+        <small>// instalando: gestión_recursos_alimenticios.exe</small>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-tag">// módulo: nutrición_social.dat</span>
+      <div class="q-text">🍽 Escoge el stack gastronómico de la noche</div>
+    </div>
+
+    <div class="options">
+      <button class="opt" onclick="pick(5,0,'🍕 Pizza — el stack más sólido')">
+        <span class="opt-key">A</span>Pizza — el stack más sólido de la gastronomía 🍕
+      </button>
+      <button class="opt" onclick="pick(5,1,'🍗 Pollo frito — raw data sin procesar')">
+        <span class="opt-key">B</span>Pollo frito — raw data sin procesar 🍗
+      </button>
+      <button class="opt" onclick="pick(5,2,'🍔 Burger — arquitectura en capas')">
+        <span class="opt-key">C</span>Burger — arquitectura en capas de sabor 🍔
+      </button>
+      <button class="opt" onclick="pick(5,3,'🌭 Hotdog — open source y altamente customizable')">
+        <span class="opt-key">D</span>Hotdog — open source & altamente customizable 🌭
+      </button>
+    </div>
+    <p class="err-msg" id="e5">⚠ ¡Hay que comer! elige algo 🙏</p>
+    <br>
+    <button class="btn-next" onclick="go(5,6)">[ CASI LISTO → ]</button>
+  </div>
+
+  <!-- STEP 6: Plan extra -->
+  <div class="step" id="s6">
+    <span class="progress-label" id="prog-label4">pregunta 4 / 4</span>
+    <div class="progress-wrap"><div class="progress-fill" id="pbar4" style="width:100%"></div></div>
+
+    <div style="text-align:center;margin:12px 0;"><img src="memes/gatito6.png" style="height:120px;width:auto;vertical-align:middle;object-fit:contain;animation:float 2.8s ease-in-out infinite;" /></div>
+    <div class="q-card">
+      <span class="q-tag">// módulo: nivel_compromiso.final</span>
+      <div class="q-text">✨ Después de la cita... ¿qué hacemos? 👀</div>
+    </div>
+
+    <div class="options">
+      <button class="opt" onclick="pick(6,0,'🌙 Paseo nocturno mientras esperamos regresar')">
+        <span class="opt-key">A</span>Paseo nocturno mientras esperamos regresar 🌙
+      </button>
+      <button class="opt" onclick="pick(6,1,'🫣 Seguir convensando')">
+        <span class="opt-key">B</span>Seguir convensando 🫣
+      </button>
+      <button class="opt" onclick="pick(6,2,'🎲 Game Rank Juntos')">
+        <span class="opt-key">C</span>Game Rank Juntos 🎲
+      </button>
+      <button class="opt" onclick="pick(6,3,'🥰 Pensar Proxima Cita')">
+        <span class="opt-key">D</span>Pensar Proxima Cita 🥰
+      </button>
+    </div>
+    <p class="err-msg" id="e6">⚠ ¡Elige! prometo que no es un contrato legal 🙏</p>
+    <br>
+    <button class="btn-next" onclick="go(6,7)">[ COMPILAR RESPUESTAS → ]</button>
+  </div>
+
+  <!-- STEP 7: Summary -->
+  <div class="step" id="s7">
+    <div class="summary-header">
+      <span class="big-cat"><img src="memes/gatito9.png" style="height:120px;width:auto;vertical-align:middle;object-fit:contain;animation:pulse 2s ease-in-out infinite;" /></span>
+      <h2>Resumen de compatibilidad</h2>
+      <p>// análisis completado · match_score: calculando... 💜</p>
+    </div>
+
+    <div class="summary-table">
+      <div class="summary-row">
+        <span class="s-icon"><img src="memes/gatito4.png" style="height:52px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+        <span class="s-label">Lugar://</span>
+        <span class="s-value" id="r1">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="s-icon"><img src="memes/gatito6.png" style="height:52px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+        <span class="s-label">cita://</span>
+        <span class="s-value" id="r-fecha">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="s-icon"><img src="memes/4.png" style="height:52px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+        <span class="s-label">plan://</span>
+        <span class="s-value" id="r2">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="s-icon"><img src="memes/gatito3.png" style="height:52px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+        <span class="s-label">comida://</span>
+        <span class="s-value" id="r3">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="s-icon"><img src="memes/2.png" style="height:52px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+        <span class="s-label">después://</span>
+        <span class="s-value" id="r4">—</span>
+      </div>
+    </div>
+
+    <!-- LA pregunta -->
+    <div class="q-card" style="border: 2px solid var(--accent); text-align: center; padding: 28px;">
+      <span style="font-size: 40px; display: block; margin-bottom: 12px;"><img src="memes/gatito0.png" style="height:110px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+      <div class="q-text" style="font-size: 22px; text-align: center;">
+        Entonces... ¿saldrías conmigo?
+      </div>
+      <p style="font-family:'Fira Code',monospace; font-size: 11px; color: var(--text-muted); margin-top: 8px;">
+        // advertencia: respuesta_incorrecta no existe en este programa
+      </p>
+    </div>
+
+    <button class="btn-next btn-confirm" onclick="celebrate()">
+      ✨ [ SÍ, ACEPTO LOS TÉRMINOS Y CONDICIONES ] ✨
+    </button>
+
+    <!-- Finale -->
+    <div class="finale" id="fmsg">
+      <span class="big-emoji"><img src="memes/gatito1.png" style="height:70px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
+      <h3>¡Match confirmado!</h3>
+      <p>
+        // status: ÉXITO<br>
+        // romance.exe iniciado correctamente<br>
+        // nos vemos pronto, estare contando los minutos 💜
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const ans = {};
+
+  function pick(step, idx, val) {
+    ans[step] = val;
+    document.querySelectorAll('#s' + step + ' .opt').forEach((b, i) => {
+      b.classList.toggle('selected', i === idx);
+    });
+    const e = document.getElementById('e' + step);
+    if (e) e.style.display = 'none';
+  }
+
+  function go(from, to) {
+    // Steps 1 and 2 are special (no pick validation needed for them)
+    if (from >= 3 && ans[from] === undefined) {
+      const e = document.getElementById('e' + from);
+      if (e) e.style.display = 'block';
+      return;
+    }
+    document.getElementById('s' + from).classList.remove('active');
+
+    if (to === 7) {
+      // Populate summary (ans keys: 3,4,5,6 for the quiz questions)
+      const summaryKeys = [3,4,5,6];
+      for (let i = 0; i < summaryKeys.length; i++) {
+        const el = document.getElementById('r' + (i+1));
+        if (el) el.textContent = ans[summaryKeys[i]] || '—';
+      }
+      // Also populate date info
+      const elDate = document.getElementById('r-fecha');
+      if (elDate) elDate.textContent = ans[2] || '—';
+    }
+
+    document.getElementById('s' + to).classList.add('active');
+  }
+
+  // Escape "No" button logic
+  let noAttempts = 0;
+  function escapeNo() {
+    noAttempts++;
+    const btnNo = document.getElementById('btn-no');
+    const btnSi = document.getElementById('btn-si');
+    const msg = document.getElementById('no-msg');
+    
+    // Make "Sí" bigger each time
+    const newSize = 18 + noAttempts * 4;
+    const newPad = 16 + noAttempts * 4;
+    btnSi.style.fontSize = Math.min(newSize, 42) + 'px';
+    btnSi.style.padding = Math.min(newPad, 32) + 'px ' + Math.min(newPad + 24, 64) + 'px';
+    
+    // Move "No" to random position
+    const parent = btnNo.parentElement;
+    const maxX = parent.offsetWidth - btnNo.offsetWidth - 20;
+    const maxY = 100;
+    btnNo.style.position = 'absolute';
+    btnNo.style.left = Math.random() * Math.max(maxX, 50) + 'px';
+    btnNo.style.top = (Math.random() * maxY - 20) + 'px';
+    
+    // Make "No" smaller
+    const noSize = Math.max(14 - noAttempts, 8);
+    btnNo.style.fontSize = noSize + 'px';
+    btnNo.style.padding = Math.max(12 - noAttempts * 2, 4) + 'px ' + Math.max(24 - noAttempts * 3, 8) + 'px';
+    
+    // Show message
+    msg.style.display = 'block';
+    
+    // After 5 attempts, hide "No" completely
+    if (noAttempts >= 5) {
+      btnNo.style.display = 'none';
+      msg.textContent = '// el "No" ya no existe en el sistema 😅💜';
+    }
+  }
+
+  // Date picker validation
+  function pickDate() {
+    const fecha = document.getElementById('cita-fecha').value;
+    const hora = document.getElementById('cita-hora').value;
+    if (!fecha || !hora) {
+      document.getElementById('e2').style.display = 'block';
+      return;
+    }
+    document.getElementById('e2').style.display = 'none';
+    ans[2] = fecha + ' a las ' + hora;
+    go(2, 3);
+  }
+
+  function celebrate() {
+    document.getElementById('fmsg').style.display = 'block';
+    document.querySelector('.btn-confirm').style.display = 'none';
+    spawnCats();
+  }
+
+  function spawnCats() {
+    const catSrcs = [
+      'memes/2.png',
+      'memes/gatito1.png',
+      'memes/4.png',
+      'memes/gatito4.png',
+      'memes/3.png',
+      'memes/2.png',
+      'memes/gatito1.png',
+      'memes/4.png',
+      'memes/gatito4.png',
+      'memes/3.png',
+      'memes/2.png',
+      'memes/gatito9.png'
+      'memes/gatito1.png',
+      'memes/4.png',
+      'memes/gatito4.png',
+      'memes/3.png',
+      'memes/2.png',
+      'memes/gatito1.png',
+      'memes/2.png',
+      'memes/gatito1.png',
+      'memes/gatito9.png'
+    ];
+    for (let i = 0; i < 16; i++) {
+      setTimeout(() => {
+        const d = document.createElement('img');
+        d.className = 'float-cat';
+        d.src = catSrcs[Math.floor(Math.random() * catSrcs.length)];
+        d.style.left = Math.random() * 95 + '%';
+        d.style.animationDuration = (3 + Math.random() * 4) + 's';
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 8000);
+      }, i * 200);
+    }
+  }
+</script>
+</body>
+</html>

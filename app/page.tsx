@@ -679,15 +679,15 @@ export default function HomePage() {
                 </div>
                 <div style={{ padding: '10px 14px', borderBottom: '1px solid #e5e7eb' }}>
                   <span style={{ fontSize: 9, color: '#6b7280' }}>📍 plan:// </span>
-                  <span style={{ fontSize: 10, fontWeight 700 }}>{answers[4] ?? '—'}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700 }}>{answers[4] ?? '—'}</span>
                 </div>
                 <div style={{ padding: '10px 14px', borderBottom: '1px solid #e5e7eb', background: '#f9fafb' }}>
                   <span style={{ fontSize: 9, color: '#6b7280' }}>🍽 comida:// </span>
-                  <span style={{ fontSize: 10, fontWeight 700 }}>{answers[5] ?? '—'}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700 }}>{answers[5] ?? '—'}</span>
                 </div>
                 <div style={{ padding: '10px 14px', background: '#f9fafb' }}>
                   <span style={{ fontSize: 9, color: '#6b7280' }}>💫 después:// </span>
-                  <span style={{ fontSize: 10, fontWeight 700 }}>{answers[6] ?? '—'}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700 }}>{answers[6] ?? '—'}</span>
                 </div>
               </div>
               <p style={{ fontSize: 9, color: '#6b7280', textAlign: 'center', lineHeight: 1.6 }}>

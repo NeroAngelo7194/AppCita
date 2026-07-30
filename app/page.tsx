@@ -11,10 +11,12 @@ const questions = [
     tag: '// módulo: Lugar.exe',
     text: '🚕 Lugares — ¿Que lugar te Gustaria ir?',
     options: [
-      '🚀 Jampy 🌭',
+      'Jampy 🌭',
       'Budapest 🍩',
-      "Gerald's 🍗",
-      '🎭 Pollos Robby 🍕',
+      'Gerald's 🍗',
+      'Pollos Robby 🍕',
+      'La NASA 🚀',
+      'Lola Pop 🍨',
     ],
   },
   {

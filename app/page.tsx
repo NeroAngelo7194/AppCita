@@ -13,7 +13,7 @@ const questions = [
     options: [
       'Jampy 🌭',
       'Budapest 🍩',
-      'Gerald's 🍗',
+      'Geralds 🍗',
       'Pollos Robby 🍕',
       'La NASA 🚀',
       'Lola Pop 🍨',

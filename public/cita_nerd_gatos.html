@@ -14,7 +14,7 @@
     --primary-light: #ede9fe;
     --primary-dark: #5b21b6;
     --accent: #ec4899;
-    --accent-light: #fce7f3;
+    --accent-light: #fce7f3;  
     --green: #10b981;
     --green-light: #d1fae5;
     --text: #1e1b4b;
@@ -435,11 +435,18 @@
     <div class="plea-card">
       <span class="plea-emoji"><img src="memes/gatito2.png" style="height:110px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
       <div class="plea-text">
-        Antes de responder... ¡responde esto primero! 🥺
+        Antes de iniciar... ¡Dime tu nombre primero! 🥺
         <small>/* se requiere una respuesta para continuar */</small>
       </div>
     </div>
-    <button class="btn-next" onclick="go(0,1)">[ INICIAR PROTOCOLO → ]</button>
+    
+    <div class="q-card" style="text-align:center; padding-bottom: 24px;">
+      <span class="q-tag">// módulo: user.auth</span>
+      <input type="text" id="user-name" placeholder="Escribe tu nombre aquí..." style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--text);background:var(--bg);outline:none;transition:border-color 0.2s;margin-top:12px;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+      <div class="err-msg" id="e0" style="margin-top: 12px;">// error: debes ingresar tu nombre 📝</div>
+    </div>
+
+    <button class="btn-next" onclick="saveNameAndGo()">[ INICIAR PROTOCOLO → ]</button>
   </div>
 
   <!-- STEP 1: ¿Quieres una cita? (Sí/No imposible) -->
@@ -624,6 +631,11 @@
 
     <div class="summary-table">
       <div class="summary-row">
+        <span class="s-icon">👤</span>
+        <span class="s-label">usuario://</span>
+        <span class="s-value" id="r-nombre">—</span>
+      </div>
+      <div class="summary-row">
         <span class="s-icon"><img src="memes/gatito4.png" style="height:52px;width:auto;vertical-align:middle;object-fit:contain;" /></span>
         <span class="s-label">Lugar://</span>
         <span class="s-value" id="r1">—</span>
@@ -681,7 +693,29 @@
 
 <script>
   const ans = {};
+  
+  let userName = "";
 
+  function saveNameAndGo() {
+    const nameInput = document.getElementById('user-name').value.trim();
+    
+    // Validar que no esté vacío
+    if (!nameInput) {
+      document.getElementById('e0').style.display = 'block';
+      return;
+    }
+    
+    document.getElementById('e0').style.display = 'none';
+    userName = nameInput;
+    ans['nombre'] = userName; // Guardamos el nombre en el diccionario de respuestas
+    
+    // ¡Magia extra! Personalizamos la pregunta del Paso 1 para que incluya su nombre
+    const qText1 = document.querySelector('#s1 .q-text');
+    if(qText1) qText1.innerHTML = `¿Quieres tener una cita conmigo, ${userName}? 🥺💕`;
+    
+    // Pasamos al siguiente paso
+    go(0, 1);
+  }
   function pick(step, idx, val) {
     ans[step] = val;
     document.querySelectorAll('#s' + step + ' .opt').forEach((b, i) => {
@@ -701,13 +735,17 @@
     document.getElementById('s' + from).classList.remove('active');
 
     if (to === 7) {
-      // Populate summary (ans keys: 3,4,5,6 for the quiz questions)
+      // Llenar el nombre
+      const elNombre = document.getElementById('r-nombre');
+      if (elNombre) elNombre.textContent = ans['nombre'] || '—';
+
+      // Llenar las respuestas del quiz
       const summaryKeys = [3,4,5,6];
       for (let i = 0; i < summaryKeys.length; i++) {
         const el = document.getElementById('r' + (i+1));
         if (el) el.textContent = ans[summaryKeys[i]] || '—';
       }
-      // Also populate date info
+      // Llenar la fecha
       const elDate = document.getElementById('r-fecha');
       if (elDate) elDate.textContent = ans[2] || '—';
     }
